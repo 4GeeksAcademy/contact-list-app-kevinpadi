@@ -1,42 +1,86 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
+			contacts: [],
+			contactData: {
+				name: "",
+				phone: "",
+				email: "",
+				address: ""
+			},
+			requestParams: {
+					URL: 'https://playground.4geeks.com/contact',
+					SLUG: 'kevinpadi'
 				}
-			]
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+			createAgenda: () => {
+				const { URL, SLUG} = getStore().requestParams
+				fetch(`${URL}/agendas/${SLUG}`, {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					}
+		
+				})
+				.then((resp) => {
+					if(resp.status === 201) {
+						getActions().getContacts()
+					}
+					return resp.json()
+				})
+				.catch(error => console.log(error))
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+			getContacts: () => {
+				const { URL, SLUG} = getStore().requestParams
+				fetch(`${URL}/agendas/${SLUG}/contacts`)
+				.then((resp) => {
+					if( resp.status === 404 ) {
+						getActions().createAgenda()
+					}
+					return resp.json()
+				})
+				.then(data => setStore({ contacts: data.contacts}))
+				.catch(error => console.log(error))
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+			createContact: () => {
+				const { URL, SLUG } = getStore().requestParams
+				const { name, phone, email, address } = getStore().contactData
+				fetch(`${URL}/agendas/${SLUG}/contacts`, {
+					method: 'POST',
+					body: JSON.stringify({
+						name: name,
+						phone: phone,
+						email: email,
+						address: address
+					}),
+					headers: {
+						"Content-Type": "application/json"
+					},
+		
+				})
+				.then((resp) => {
+					if(resp.status === 201) {
+						getActions().getContacts()
+					}
+					return resp.json()
+				})
+				.catch(error => console.log(error))
+			},
+			deleteContact: (id) => {
+				const { URL, SLUG } = getStore().requestParams
+				fetch(`${URL}/agendas/${SLUG}/contacts/${id}`, {
+					method: 'DELETE',
+					headers: {
+						"Content-Type": "application/json"
+					},
+				})
+				.then((resp) => {
+					if (resp.status === 204) {
+						getActions().getContacts()
+					}
+				})
+				.catch(error => console.log(error));
 			}
 		}
 	};
