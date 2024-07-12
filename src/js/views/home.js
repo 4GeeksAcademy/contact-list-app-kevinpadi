@@ -16,16 +16,18 @@ export const Home = () => {
 	} ,[])
 
 	return (
-		<div className="container-fluid bg-black vh-100 ">
-			<Navbar />
-			<ul className="list-group mx-auto d-flex flex-column gap-4" style={{maxWidth: '800px'}}>
-				{
-					store.contacts.length !== 0 ? store.contacts.map((contact) => (
-						<ContactCard key={contact.id} contact={contact} handleDelete={handleDelete} />
-					))
-					: <h1>Create a new contact</h1>
-				}
-			</ul>
+		<div className="container-fluid bg-black vh-100">
+			<div className="h-100 mx-auto" style={{maxWidth: '800px'}}>
+				<Navbar />
+				<ul className="list-group mx-auto d-flex flex-column gap-4 w-100">
+					{
+						store.contacts.length !== 0 ? store.contacts.map((contact) => (
+							<ContactCard key={contact.id} contact={contact} handleDelete={handleDelete} />
+						))
+						: <h1 className="fs-3">You have no contacts yet.</h1>
+					}
+				</ul>
+			</div>
 		</div>
 	)
 };

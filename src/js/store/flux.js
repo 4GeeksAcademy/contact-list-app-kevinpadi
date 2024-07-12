@@ -2,12 +2,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			contacts: [],
-			contactData: {
-				name: "",
-				phone: "",
-				email: "",
-				address: ""
-			},
 			requestParams: {
 					URL: 'https://playground.4geeks.com/contact',
 					SLUG: 'kevinpadi'
@@ -43,9 +37,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				.then(data => setStore({ contacts: data.contacts}))
 				.catch(error => console.log(error))
 			},
-			createContact: () => {
+			createContact: (data) => {
 				const { URL, SLUG } = getStore().requestParams
-				const { name, phone, email, address } = getStore().contactData
+				const { name, phone, email, address } = data
 				fetch(`${URL}/agendas/${SLUG}/contacts`, {
 					method: 'POST',
 					body: JSON.stringify({
@@ -67,6 +61,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 				.catch(error => console.log(error))
 			},
+			editContact: (data, id) => {
+				const { URL, SLUG } = getStore().requestParams
+				const { name, phone, email, address } = data
+				fetch(`${URL}/agendas/${SLUG}/contacts/${id}`, {
+					// /agendas/{slug}/contacts/{contact_id}
+					method: 'PUT',
+					body: JSON.stringify({
+						name: name,
+						phone: phone,
+						email: email,
+						address: address
+					}),
+					headers: {
+						"Content-Type": "application/json"
+					},
+		
+				})
+				.then((resp) => {
+					if(resp.status === 200) {
+						getActions().getContacts()
+					}
+					return resp.json()
+				})
+				.catch(error => console.log(error))
+			},
 			deleteContact: (id) => {
 				const { URL, SLUG } = getStore().requestParams
 				fetch(`${URL}/agendas/${SLUG}/contacts/${id}`, {
@@ -81,7 +100,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				})
 				.catch(error => console.log(error));
-			}
+			},
 		}
 	};
 };
