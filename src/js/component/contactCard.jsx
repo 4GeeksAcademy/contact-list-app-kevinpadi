@@ -39,7 +39,7 @@ const ContactCard = ({ contact, handleDelete }) => {
                         <h5 className="card-title">{editedData.name}</h5>
                         <div className='d-flex gap-2 align-items-center'>
                             <button type='button' className="btn border-0 btn-sm text-secondary"  data-bs-toggle="modal" data-bs-target={`#exampleModalEdit${contact.id}`}><i className="fas fa-edit pe-1"></i> Edit</button>
-                            <button type='button' className="btn border-0 btn-sm text-secondary"  data-bs-toggle="modal" data-bs-target="#exampleModalDelete">
+                            <button type='button' className="btn border-0 btn-sm text-secondary"  data-bs-toggle="modal" data-bs-target={`#exampleModalDelete${contact.id}`}>
                               <i className="fas fa-trash pe-1"></i>
                               Delete
                             </button>
@@ -98,7 +98,7 @@ const ContactCard = ({ contact, handleDelete }) => {
                 </div>
               </div>
               {/* modal delete */}
-              <div className="modal fade" id="exampleModalDelete" tabIndex="-1" aria-labelledby="exampleModalDeleteLabel" aria-hidden="true">
+              <div className="modal fade" id={`exampleModalDelete${contact.id}`} tabIndex="-1" aria-labelledby="exampleModalDeleteLabel" aria-hidden="true">
                 <div className="modal-dialog border border-secondary rounded rounded-3">
                   <div className="modal-content border-0 bg-black">
                     <div className="modal-header bg-black">

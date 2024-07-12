@@ -16,7 +16,7 @@ export const Home = () => {
 	} ,[])
 
 	return (
-		<div className="container-fluid bg-black vh-100">
+		<div className="container-fluid bg-black" style={{minHeight: '100vh'}}>
 			<div className="h-100 mx-auto" style={{maxWidth: '800px'}}>
 				<Navbar />
 				<ul className="list-group mx-auto d-flex flex-column gap-4 w-100">
