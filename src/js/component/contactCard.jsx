@@ -38,7 +38,7 @@ const ContactCard = ({ contact, handleDelete }) => {
                       <div className='d-flex justify-content-between align-items-center pb-3'>
                         <h5 className="card-title">{editedData.name}</h5>
                         <div className='d-flex gap-2 align-items-center'>
-                            <button type='button' className="btn border-0 btn-sm text-secondary"  data-bs-toggle="modal" data-bs-target="#exampleModalEdit"><i className="fas fa-edit pe-1"></i> Edit</button>
+                            <button type='button' className="btn border-0 btn-sm text-secondary"  data-bs-toggle="modal" data-bs-target={`#exampleModalEdit${contact.id}`}><i className="fas fa-edit pe-1"></i> Edit</button>
                             <button type='button' className="btn border-0 btn-sm text-secondary"  data-bs-toggle="modal" data-bs-target="#exampleModalDelete">
                               <i className="fas fa-trash pe-1"></i>
                               Delete
@@ -63,7 +63,7 @@ const ContactCard = ({ contact, handleDelete }) => {
                 </div>
               </div>
               {/* modal edit */}
-              <div className="modal fade" id="exampleModalEdit" tabIndex="-1" aria-labelledby="exampleModalEditLabel" aria-hidden="true">
+              <div className="modal fade" id={`exampleModalEdit${contact.id}`} tabIndex="-1" aria-labelledby="exampleModalEditLabel" aria-hidden="true">
                 <div className="modal-dialog border border-secondary rounded rounded-3">
                   <div className="modal-content border-0 bg-black">
                     <div className="modal-header bg-black">
