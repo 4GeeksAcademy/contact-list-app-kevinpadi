@@ -31,8 +31,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				.then((resp) => {
 					if( resp.status === 404 ) {
 						getActions().createAgenda()
+					} else {
+						return resp.json()
 					}
-					return resp.json()
 				})
 				.then(data => setStore({ contacts: data.contacts}))
 				.catch(error => console.log(error))
